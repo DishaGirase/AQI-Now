@@ -25,7 +25,8 @@ st.set_page_config(
 # ============================================================
 
 API_KEY = "74bd8aa4ee544b2d53c36cf5ef9a93ea"  # Your constant OpenWeatherMap API key
-MODEL_PATH = r'C:\Users\Disha\Aqi_model\aqi_model.joblib'  # ML model path
+#MODEL_PATH = r'C:\Users\Disha\Aqi_model\aqi_model.joblib'  # ML model path
+MODEL_PATH = os.path.join("Aqi_model", "aqi_model.joblib")
 
 # ============================================================
 # STYLES
@@ -113,11 +114,14 @@ def fetch_aqi_from_api(lat, lon, api_key):
         return None, None
 
 def predict_aqi_with_model(features):
-    if not os.path.exists(MODEL_PATH):
-        st.warning(f"ML model '{MODEL_PATH}' not found. Skipping model prediction.")
+    # Use relative path
+    model_path = os.path.join("Aqi_model", "aqi_model.joblib")
+    
+    if not os.path.exists(model_path):
+        st.warning(f"ML model '{model_path}' not found. Skipping model prediction.")
         return None
     try:
-        model = joblib.load(MODEL_PATH)
+        model = joblib.load(model_path)
         prediction = model.predict([features])[0]
         return round(float(prediction))
     except Exception as e:
