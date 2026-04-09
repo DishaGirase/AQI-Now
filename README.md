@@ -155,6 +155,9 @@ Predicted AQI: 103 (Moderate)
 | Disha Girase   | 14099    |
 | Irnitee Patel  | 14219    |
 ---
+## Project Presentation
+
+[View Presentation](AQI-NOW__presentation.pdf)
 
 ## Built With
 [![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/) 
