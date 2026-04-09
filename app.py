@@ -12,13 +12,12 @@ import os
 
 st.set_page_config(
     page_title="AI-Powered AQI Dashboard",
-    #page_icon="🌫️",
     layout="wide",
 )
 
 # CONSTANTS
 
-API_KEY = "74bd8aa4ee544b2d53c36cf5ef9a93ea"  # Your constant OpenWeatherMap API key
+API_KEY = "74bd8aa4ee544b2d53c36cf5ef9a93ea"  
 MODEL_PATH = os.path.join("Aqi_model", "aqi_model.joblib")
 
 # STYLES
@@ -97,14 +96,14 @@ def fetch_aqi_from_api(lat, lon, api_key):
             return None, None
         aqi = data["list"][0]["main"]["aqi"]
         components = data["list"][0]["components"]
-        epa_scale = [50, 100, 150, 200, 300]  # Convert 1-5 scale to EPA approx.
+        epa_scale = [50, 100, 150, 200, 300] 
         api_aqi = epa_scale[aqi - 1]
         return api_aqi, components
     except Exception:
         return None, None
 
 def predict_aqi_with_model(features):
-    # Use relative path
+    
     model_path = os.path.join("Aqi_model", "aqi_model.joblib")
     
     if not os.path.exists(model_path):
@@ -149,7 +148,6 @@ def create_gauge_chart(aqi_value):
 
 st.header("AQI Prediction Dashboard")
 
-# Dropdown of test cities
 test_cities = [
     "Ahmedabad", "Delhi", "Mumbai", "Bengaluru", "Chennai",
     "Kolkata", "Hyderabad", "Pune", "Jaipur", "Lucknow"
@@ -159,7 +157,7 @@ st.markdown("**Select a city from the list or enter a city manually:**")
 city_dropdown = st.selectbox("Quick Select City", ["--Select--"] + test_cities)
 city_manual = st.text_input("Or type your city name here", "")
 
-# Determine which city to use
+
 if city_manual.strip():
     city = city_manual.strip()
 elif city_dropdown != "--Select--":
@@ -184,10 +182,10 @@ st.write(f"Coordinates: {lat:.2f}, {lon:.2f}")
 
 predicted_aqi = None
 if pollutants:
-    st.write("### 🌬️ Real-Time Pollutants (μg/m³)")
+    st.write("### Real-Time Pollutants (μg/m³)")
     st.dataframe(pd.DataFrame([pollutants]).T.rename(columns={0:"Concentration"}))
 
-    # 8 features (must match model)
+   
     model_features = [
         pollutants.get("pm2_5",0),
         pollutants.get("pm10",0),
@@ -221,7 +219,7 @@ if predicted_aqi or api_aqi:
 
     if predicted_aqi and api_aqi:
         match_accuracy = 100 - abs(predicted_aqi-api_aqi)/api_aqi*100
-        st.success(f"✅ Prediction Agreement: {match_accuracy:.2f}%")
+        st.success(f"Prediction Agreement: {match_accuracy:.2f}%")
 else:
     st.error("No AQI data available to display.")
 
@@ -236,7 +234,7 @@ if predicted_aqi or api_aqi:
     st.session_state["history"] = pd.concat([st.session_state["history"], pd.DataFrame([new_row])], ignore_index=True)
 
 if len(st.session_state["history"]) > 0:
-    st.write("### 🕒 Historical Predictions (this session)")
+    st.write("### Historical Predictions (this session)")
     st.dataframe(st.session_state["history"])
 
 # FOOTER
