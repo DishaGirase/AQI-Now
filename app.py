@@ -1,6 +1,4 @@
-# ============================================================
-# 🌫️ STREAMLIT APP: AIR QUALITY INDEX (AQI) DASHBOARD
-# ============================================================
+# STREAMLIT APP: AIR QUALITY INDEX (AQI) DASHBOARD
 
 import streamlit as st
 import numpy as np
@@ -10,9 +8,7 @@ import plotly.graph_objects as go
 import joblib
 import os
 
-# ============================================================
 # CONFIGURATION
-# ============================================================
 
 st.set_page_config(
     page_title="AI-Powered AQI Dashboard",
@@ -20,17 +16,13 @@ st.set_page_config(
     layout="wide",
 )
 
-# ============================================================
 # CONSTANTS
-# ============================================================
 
 API_KEY = "74bd8aa4ee544b2d53c36cf5ef9a93ea"  # Your constant OpenWeatherMap API key
-#MODEL_PATH = r'C:\Users\Disha\Aqi_model\aqi_model.joblib'  # ML model path
 MODEL_PATH = os.path.join("Aqi_model", "aqi_model.joblib")
 
-# ============================================================
 # STYLES
-# ============================================================
+
 st.markdown(
     """
     <style>
@@ -68,9 +60,7 @@ st.markdown(
 )
 
 
-# ============================================================
 # HELPER FUNCTIONS
-# ============================================================
 
 def get_aqi_category(aqi_value):
     if aqi_value <= 50:
@@ -155,17 +145,14 @@ def create_gauge_chart(aqi_value):
     return fig
     
 
-# ============================================================
 # LOCATION INPUT
-# ============================================================
 
 st.header("AQI Prediction Dashboard")
 
 # Dropdown of test cities
 test_cities = [
     "Ahmedabad", "Delhi", "Mumbai", "Bengaluru", "Chennai",
-    "Kolkata", "Hyderabad", "Pune", "Jaipur", "Lucknow",
-    "Los Angeles", "New York", "Chicago", "London", "Paris"
+    "Kolkata", "Hyderabad", "Pune", "Jaipur", "Lucknow"
 ]
 
 st.markdown("**Select a city from the list or enter a city manually:**")
@@ -180,9 +167,8 @@ elif city_dropdown != "--Select--":
 else:
     st.warning("Please select a city or enter a city name to begin.")
     st.stop()
-# ============================================================
+
 # FETCH DATA
-# ============================================================
 
 lat, lon = fetch_coordinates(city=city, api_key=API_KEY)
 if lat is None:
@@ -194,9 +180,7 @@ api_aqi, pollutants = fetch_aqi_from_api(lat, lon, API_KEY)
 st.subheader(f"📍 Location: {city.title()}")
 st.write(f"Coordinates: {lat:.2f}, {lon:.2f}")
 
-# ============================================================
 # MODEL PREDICTION
-# ============================================================
 
 predicted_aqi = None
 if pollutants:
@@ -217,9 +201,7 @@ if pollutants:
 
     predicted_aqi = predict_aqi_with_model(model_features)
 
-# ============================================================
 # DISPLAY RESULTS
-# ============================================================
 
 if predicted_aqi or api_aqi:
     col1, col2 = st.columns(2)
@@ -243,9 +225,8 @@ if predicted_aqi or api_aqi:
 else:
     st.error("No AQI data available to display.")
 
-# ============================================================
 # HISTORICAL SESSION TRACKING
-# ============================================================
+
 
 if "history" not in st.session_state:
     st.session_state["history"] = pd.DataFrame(columns=["City","Predicted AQI","API AQI"])
@@ -258,9 +239,7 @@ if len(st.session_state["history"]) > 0:
     st.write("### 🕒 Historical Predictions (this session)")
     st.dataframe(st.session_state["history"])
 
-# ============================================================
 # FOOTER
-# ============================================================
 
 st.markdown(
     """
