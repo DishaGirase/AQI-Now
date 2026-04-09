@@ -157,7 +157,7 @@ Predicted AQI: 103 (Moderate)
 ---
 ## Project Presentation
 
-[View Presentation](AQI-NOW__presentation.pdf)
+[View Presentation](AQI-NOW_presentation.pdf)
 
 ## Built With
 [![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/) 
